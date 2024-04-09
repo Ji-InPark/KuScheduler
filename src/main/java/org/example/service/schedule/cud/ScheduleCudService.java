@@ -20,10 +20,10 @@ public class ScheduleCudService {
                     }
                     break;
                 case 2:
-                    System.out.println("스케줄 변경");
+                    new ScheduleUpdateService().start(user);
                     break;
                 case 3:
-                    System.out.println("스케줄 삭제");
+                    new ScheduleDeleteService().start(user);
                     break;
                 case 4:
                     return;

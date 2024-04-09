@@ -40,7 +40,7 @@ public class ScheduleRepository {
         saveSchedule();
     }
 
-    public void updateSchedule(int id, String name, String startDate, String endDate, int priority,
+    public void updateSchedule(int id, String name, Date startDate, Date endDate, int priority,
             int userId) {
         schedules.put(id, new Schedule(id, name, startDate, endDate, priority, userId));
         saveSchedule();
@@ -49,6 +49,13 @@ public class ScheduleRepository {
     public void deleteSchedule(int id) {
         schedules.remove(id);
         saveSchedule();
+    }
+
+    public Schedule findByIdAndUserId(int id, int userId) {
+        return schedules.values().stream()
+                .filter(schedule -> schedule.id == id && schedule.userId == userId)
+                .findFirst()
+                .orElse(null);
     }
 
     public List<Schedule> findAllByUserId(int userId) {
