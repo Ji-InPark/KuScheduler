@@ -17,7 +17,7 @@ public class ScheduleMenuService {
                     new ScheduleReadService().start(user);
                     break;
                 case 2:
-                    System.out.println("스케쥴 추가/변경/삭제");
+                    System.out.println("스케줄 추가/변경/삭제");
                     break;
                 case 3:
                     System.out.println("정상적으로 로그아웃 되었습니다.");
@@ -35,8 +35,8 @@ public class ScheduleMenuService {
         System.out.println("----------------------");
         System.out.println("       Scheduler      ");
         System.out.println("----------------------");
-        System.out.println("1) 스케쥴 조회 ");
-        System.out.println("2) 스케쥴 추가/변경/삭제 ");
+        System.out.println("1) 스케줄 조회 ");
+        System.out.println("2) 스케줄 추가/변경/삭제 ");
         System.out.println("3) 로그아웃 ");
         System.out.print("메뉴를 선택해주세요: ");
     }

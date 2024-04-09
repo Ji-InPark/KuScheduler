@@ -19,15 +19,9 @@ public class ScheduleReadByDateService {
             int choice = getUserInput();
             switch (choice) {
                 case 1:
-                    if (readByMonth()) {
-                        return true;
-                    }
-                    break;
+                    return readByMonth();
                 case 2:
-                    if (readByDay()) {
-                        return true;
-                    }
-                    break;
+                    return readByDay();
                 case 3:
                     return false;
                 case 4:
@@ -85,7 +79,7 @@ public class ScheduleReadByDateService {
             }
 
             var subject = String.format(
-                    "|                        %02d月 %02d日                        |\n",
+                    "|                       %02d月 %02d日                         |\n",
                     month, day);
             PrintService.getInstance().printScheduleHeader(user, subject);
             PrintService.getInstance().printSchedules(schedules);
@@ -122,7 +116,7 @@ public class ScheduleReadByDateService {
                 }
 
                 var subject = String.format(
-                        "|                        %02d月                        |\n", month);
+                        "|                          %02d月                          |\n", month);
                 PrintService.getInstance().printScheduleHeader(user, subject);
                 PrintService.getInstance().printSchedules(schedules);
             } catch (NumberFormatException e) {
