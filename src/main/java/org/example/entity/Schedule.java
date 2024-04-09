@@ -22,6 +22,15 @@ public class Schedule {
         this.userId = userId;
     }
 
+    public Schedule(int id, String name, Date startDate, Date endDate, int priority, int userId) {
+        this.id = id;
+        this.name = name;
+        this.priority = priority;
+        this.startDate = startDate;
+        this.endDate = endDate;
+        this.userId = userId;
+    }
+
     public String convertToCsvRow() {
         return id + "," + name + "," + convertDateToString(startDate) + ","
                 + convertDateToString(endDate) + "," + priority + "," + userId;

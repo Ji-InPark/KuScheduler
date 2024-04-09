@@ -2,6 +2,7 @@ package org.example.service.schedule;
 
 import java.util.Scanner;
 import org.example.entity.User;
+import org.example.service.schedule.cud.ScheduleCudService;
 import org.example.service.schedule.read.ScheduleReadService;
 
 public class ScheduleMenuService {
@@ -17,7 +18,7 @@ public class ScheduleMenuService {
                     new ScheduleReadService().start(user);
                     break;
                 case 2:
-                    System.out.println("스케줄 추가/변경/삭제");
+                    new ScheduleCudService().start(user);
                     break;
                 case 3:
                     System.out.println("정상적으로 로그아웃 되었습니다.");

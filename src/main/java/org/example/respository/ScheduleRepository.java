@@ -30,7 +30,7 @@ public class ScheduleRepository {
         return instance;
     }
 
-    public void addSchedule(String name, String startDate, String endDate, int priority,
+    public void addSchedule(String name, Date startDate, Date endDate, int priority,
             int userId) {
         var maxId = schedules.keySet().stream()
                 .max(Integer::compare)
