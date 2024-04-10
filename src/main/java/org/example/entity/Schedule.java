@@ -44,6 +44,10 @@ public class Schedule {
         return convertDateToString(endDate);
     }
 
+    public int getKoreanLength() {
+        return (name.getBytes().length - name.length()) / 2;
+    }
+
     private String convertDateToString(Date date) {
         var month = date.getMonth() + 1;
         var day = date.getDate();

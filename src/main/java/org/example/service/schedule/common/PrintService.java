@@ -30,11 +30,11 @@ public class PrintService {
 
     public void printSchedules(List<Schedule> schedules) {
         for (var schedule : schedules) {
-            System.out.printf("|%-4s|%-15s|%-23s|%-7s|\n",
+            System.out.printf("|%-4s|%-" + (34 - schedule.getKoreanLength()) + "s|%-27s|%-8s|\n",
                     StringUtils.center(String.valueOf(schedule.id), 4),
-                    StringUtils.center(schedule.name, 15),
-                    StringUtils.center(schedule.getStartDate() + " ~ " + schedule.getEndDate(), 25),
-                    StringUtils.center(priorityString(schedule.priority), 7)
+                    schedule.name,
+                    StringUtils.center(schedule.getStartDate() + " ~ " + schedule.getEndDate(), 27),
+                    StringUtils.center(priorityString(schedule.priority), 8)
             );
         }
         printHorizontalLine();
@@ -42,16 +42,16 @@ public class PrintService {
 
     public void printScheduleHeader(User user, String subject) {
         printHorizontalLine();
-        System.out.printf("|%-23s%-29s|\n", user.name + "님 환영합니다.", "");
+        System.out.printf("|%-44s%-26s|\n", user.name + "님 환영합니다.", "");
         printHorizontalLine();
-        System.out.println("|                        스 케 줄                         |");
+        System.out.printf("|%34s스 케 줄%34s|\n", "", "");
         if (subject != null) {
             System.out.println(subject);
         }
         printHorizontalLine();
-        System.out.printf("|%-4s|%-15s|%-23s|%-5s|\n",
+        System.out.printf("|%-4s|%-30s|%-23s|%-5s|\n",
                 StringUtils.center("ID", 4),
-                StringUtils.center("스케줄명", 15),
+                StringUtils.center("스케줄명", 30),
                 StringUtils.center("날짜/시간", 23),
                 StringUtils.center("중요도", 5)
         );
@@ -59,6 +59,7 @@ public class PrintService {
     }
 
     private void printHorizontalLine() {
-        System.out.println("---------------------------------------------------------");
+        System.out.println(
+                "------------------------------------------------------------------------------");
     }
 }
