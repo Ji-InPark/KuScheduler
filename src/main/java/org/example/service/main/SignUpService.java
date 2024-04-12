@@ -45,7 +45,7 @@ public class SignUpService {
     }
 
     private boolean isValidId(String id) {
-        if (id.length() < 3 || id.length() > 10) {
+        if (id.length() < 4 || id.length() > 10) {
             System.out.println("아이디는 4자 이상 10자 이하로 입력해주세요.");
             return false;
         }
