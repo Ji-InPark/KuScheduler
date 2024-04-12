@@ -50,7 +50,7 @@ public class SignUpService {
             return false;
         }
 
-        if (!id.matches(".*[0-9a-zA-Z].*")) {
+        if (!id.matches("^[0-9a-zA-Z]*")) {
             System.out.println("아이디는 영문자와 숫자로만 입력해주세요.");
             return false;
         }
