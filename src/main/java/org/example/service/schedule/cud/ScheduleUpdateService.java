@@ -2,7 +2,6 @@ package org.example.service.schedule.cud;
 
 import java.util.Date;
 import java.util.GregorianCalendar;
-import java.util.List;
 import java.util.Scanner;
 import org.example.entity.Schedule;
 import org.example.entity.User;
@@ -38,58 +37,94 @@ public class ScheduleUpdateService {
             break;
         }
 
-        PrintService.getInstance().printSchedules(List.of(schedule));
-        System.out.println("[1: 스케줄명, 2: 시작날짜/시간, 3: 종료날짜/시간, 4: 중요도, q: 이전 화면]");
-        System.out.print("변경할 내용을 선택하세요: ");
-        var choice = scanner.nextLine().trim();
-        switch (choice) {
-            case "1":
-                System.out.print("변경할 스케줄명을 입력하세요: ");
-                var name = scanner.nextLine().trim();
-                if (!isValidTitle(name)) {
-                    System.out.println("Error! 스케줄 이름이 형식에 맞게 입력되지 않았습니다.");
-                    System.out.println("엔터키를 누르면 이전 화면으로 돌아갑니다.");
-                    scanner.nextLine();
+        var dummySchedule = new Schedule(schedule.id, schedule.name, schedule.startDate,
+                schedule.endDate, schedule.priority, user.id);
+
+        Loop:
+        while (true) {
+            PrintService.getInstance().printSchedule(schedule);
+            System.out.println("[1: 스케줄명, 2: 시작날짜/시간, 3: 종료날짜/시간, 4: 중요도, q: 이전 화면]");
+            System.out.print("변경할 내용을 선택하세요: ");
+            var choice = scanner.nextLine().trim();
+            switch (choice) {
+                case "1":
+                    System.out.print("변경할 스케줄명을 입력하세요: ");
+                    var name = scanner.nextLine().trim();
+                    if (!isValidTitle(name)) {
+                        System.out.println("Error! 스케줄 이름이 형식에 맞게 입력되지 않았습니다.");
+                        System.out.println("엔터키를 누르면 이전 화면으로 돌아갑니다.");
+                        scanner.nextLine();
+                        break;
+                    }
+                    dummySchedule.name = name;
+                    break Loop;
+                case "2":
+                    System.out.print("변경할 시작 날짜와 시간(예: 4/22 15:30)을 입력해주세요: ");
+                    var startDateInput = scanner.nextLine().trim();
+                    var startDate = parseDateAndValidate(startDateInput);
+                    if (startDate == null) {
+                        System.out.println("Error! 시작 날짜 및 시간이 형식에 맞게 입력되지 않았습니다.");
+                        System.out.println("엔터키를 누르면 이전 화면으로 돌아갑니다.");
+                        scanner.nextLine();
+                        break;
+                    }
+
+                    if (startDate.after(dummySchedule.endDate)) {
+                        System.out.println("Error! 종료 시간이 시작 시간보다 앞서있습니다.");
+                        System.out.println("엔터키를 누르면 이전 화면으로 돌아갑니다.");
+                        scanner.nextLine();
+                        break;
+                    }
+
+                    dummySchedule.startDate = startDate;
+                    break Loop;
+                case "3":
+                    System.out.print("변경할 종료 날짜와 시간(예: 4/22 15:30)을 입력해주세요: ");
+                    var endDateInput = scanner.nextLine().trim();
+                    var endDate = parseDateAndValidate(endDateInput);
+                    if (endDate == null) {
+                        System.out.println("Error! 종료 날짜 및 시간이 형식에 맞게 입력되지 않았습니다.");
+                        System.out.println("엔터키를 누르면 이전 화면으로 돌아갑니다.");
+                        scanner.nextLine();
+                        break;
+                    }
+
+                    if (dummySchedule.startDate.after(endDate)) {
+                        System.out.println("Error! 종료 시간이 시작 시간보다 앞서있습니다.");
+                        System.out.println("엔터키를 누르면 이전 화면으로 돌아갑니다.");
+                        scanner.nextLine();
+                        break;
+                    }
+
+                    dummySchedule.endDate = endDate;
+                    break Loop;
+                case "4":
+                    System.out.print("변경할 중요도를 입력해주세요: ");
+                    var priorityInput = scanner.nextLine().trim();
+                    if (!isValidPriority(priorityInput)) {
+                        System.out.println("Error! 중요도가 형식에 맞게 입력되지 않았습니다.");
+                        System.out.println("엔터키를 누르면 이전 화면으로 돌아갑니다.");
+                        scanner.nextLine();
+                        break;
+                    }
+
+                    if (!isValidSchedule(dummySchedule.startDate, dummySchedule.endDate,
+                            Integer.parseInt(priorityInput))) {
+                        System.out.println("Error! 해당 기간에 중복된 중요도의 스케줄이 이미 존재합니다.");
+                        System.out.println("기존 일정의 중요도를 수정하시려면 변경창에서 수정해주시길 바랍니다.");
+                        System.out.println("엔터키를 누르면 이전 화면으로 돌아갑니다.");
+                        scanner.nextLine();
+                        break;
+                    }
+
+                    dummySchedule.priority = Integer.parseInt(priorityInput);
+                    break Loop;
+                case "q":
                     return;
-                }
-                schedule.name = name;
-                break;
-            case "2":
-                System.out.print("변경할 시작 날짜와 시간(예: 4/22 15:30)을 입력해주세요: ");
-                var startDateInput = scanner.nextLine().trim();
-                var startDate = parseDateAndValidate(startDateInput);
-                if (startDate == null) {
-                    System.out.println("Error! 시작 날짜 및 시간이 형식에 맞게 입력되지 않았습니다.");
-                    System.out.println("엔터키를 누르면 이전 화면으로 돌아갑니다.");
-                    scanner.nextLine();
-                    return;
-                }
-                schedule.startDate = startDate;
-                break;
-            case "3":
-                System.out.print("변경할 종료 날짜와 시간(예: 4/22 15:30)을 입력해주세요: ");
-                var endDateInput = scanner.nextLine().trim();
-                var endDate = parseDateAndValidate(endDateInput);
-                if (endDate == null) {
-                    System.out.println("Error! 종료 날짜 및 시간이 형식에 맞게 입력되지 않았습니다.");
-                    System.out.println("엔터키를 누르면 이전 화면으로 돌아갑니다.");
-                    scanner.nextLine();
-                    return;
-                }
-                schedule.endDate = endDate;
-                break;
-            case "4":
-                System.out.print("변경할 중요도를 입력해주세요: ");
-                var priorityInput = scanner.nextLine().trim();
-                if (!isValidPriority(priorityInput)) {
-                    System.out.println("Error! 중요도가 형식에 맞게");
-                }
-                break;
-            case "q":
-                return;
-            default:
-                System.out.println("1~4, q 값중 하나만 입력해주세요.");
-                return;
+                default:
+                    System.out.println("1~4, q 값중 하나만 입력해주세요.");
+                    break;
+            }
         }
 
         do {
@@ -107,6 +142,17 @@ public class ScheduleUpdateService {
 
             System.out.println("Error! 형식에 맞게 입력해주세요.");
         } while (true);
+    }
+
+    private boolean isValidSchedule(Date startDate, Date endDate, int priority) {
+        return ScheduleRepository.getInstance().findAllByUserIdAndPriority(user.id, priority)
+                .stream()
+                .filter(schedule ->
+                        (startDate.after(schedule.startDate)
+                                && startDate.before(schedule.endDate))
+                                || (endDate.after(schedule.startDate)
+                                && endDate.before(schedule.endDate))
+                ).toList().isEmpty();
     }
 
     private boolean isValidPriority(String priority) {

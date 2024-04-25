@@ -41,7 +41,7 @@ public class ScheduleReadByPriorityService {
                 var subject = String.format(
                         "|                      중요도: %-3s                        |\n",
                         priorityString(priority));
-                PrintService.getInstance().printScheduleHeader(user, subject);
+                PrintService.getInstance().printScheduleHeaderWithUserInfo(user, subject);
                 PrintService.getInstance().printSchedules(schedules);
             } catch (NumberFormatException e) {
                 System.out.println("입력한 값이 잘못되었습니다.");

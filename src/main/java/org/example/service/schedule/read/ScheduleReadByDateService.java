@@ -81,7 +81,7 @@ public class ScheduleReadByDateService {
             var subject = String.format(
                     "|                       %02d月 %02d日                         |\n",
                     month, day);
-            PrintService.getInstance().printScheduleHeader(user, subject);
+            PrintService.getInstance().printScheduleHeaderWithUserInfo(user, subject);
             PrintService.getInstance().printSchedules(schedules);
         } while (true);
     }
@@ -117,7 +117,7 @@ public class ScheduleReadByDateService {
 
                 var subject = String.format(
                         "|                          %02d月                          |\n", month);
-                PrintService.getInstance().printScheduleHeader(user, subject);
+                PrintService.getInstance().printScheduleHeaderWithUserInfo(user, subject);
                 PrintService.getInstance().printSchedules(schedules);
             } catch (NumberFormatException e) {
                 System.out.println("입력한 값이 잘못되었습니다.");

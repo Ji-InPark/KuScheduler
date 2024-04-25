@@ -39,7 +39,7 @@ public class ScheduleReadService {
 
     public void printAllSchedule() {
         var schedules = ScheduleRepository.getInstance().findAllByUserId(user.id);
-        PrintService.getInstance().printScheduleHeader(user, null);
+        PrintService.getInstance().printScheduleHeaderWithUserInfo(user, null);
         PrintService.getInstance().printSchedules(schedules);
     }
 

@@ -28,6 +28,16 @@ public class PrintService {
 
     }
 
+    public void printSchedule(Schedule schedule) {
+        printScheduleHeader();
+        System.out.printf("|%-4s|%-" + (34 - schedule.getKoreanLength()) + "s|%-27s|%-8s|\n",
+                StringUtils.center(String.valueOf(schedule.id), 4),
+                schedule.name,
+                StringUtils.center(schedule.getStartDate() + " ~ " + schedule.getEndDate(), 27),
+                StringUtils.center(priorityString(schedule.priority), 8));
+        printHorizontalLine();
+    }
+
     public void printSchedules(List<Schedule> schedules) {
         for (var schedule : schedules) {
             System.out.printf("|%-4s|%-" + (34 - schedule.getKoreanLength()) + "s|%-27s|%-8s|\n",
@@ -40,7 +50,7 @@ public class PrintService {
         printHorizontalLine();
     }
 
-    public void printScheduleHeader(User user, String subject) {
+    public void printScheduleHeaderWithUserInfo(User user, String subject) {
         printHorizontalLine();
         System.out.printf("|%-44s%-26s|\n", user.name + "님 환영합니다.", "");
         printHorizontalLine();
@@ -48,6 +58,10 @@ public class PrintService {
         if (subject != null) {
             System.out.println(subject);
         }
+        printScheduleHeader();
+    }
+
+    private void printScheduleHeader() {
         printHorizontalLine();
         System.out.printf("|%-4s|%-30s|%-23s|%-5s|\n",
                 StringUtils.center("ID", 4),
