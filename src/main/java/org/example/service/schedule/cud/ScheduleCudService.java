@@ -12,25 +12,31 @@ public class ScheduleCudService {
         this.user = user;
         while (true) {
             printScheduleCudMenu();
-            int choice = getUserInput();
-            switch (choice) {
-                case 1:
-                    if (new ScheduleCreateService().start(user)) {
-                        return;
-                    }
-                    break;
-                case 2:
-                    new ScheduleUpdateService().start(user);
-                    break;
-                case 3:
-                    new ScheduleDeleteService().start(user);
-                    break;
-                case 4:
+            try {
+                var input = scanner.nextLine().trim();
+                if (input.equals("q")) {
                     return;
-                default:
-                    System.out.println("1,2,3,q 값중 하나만 입력해주세요.");
-                    System.out.println("엔터키를 누르면 메인메뉴로 돌아갑니다.");
-                    scanner.nextLine();
+                }
+                switch (input) {
+                    case "1":
+                        if (new ScheduleCreateService().start(user)) {
+                            return;
+                        }
+                        break;
+                    case "2":
+                        new ScheduleUpdateService().start(user);
+                        break;
+                    case "3":
+                        new ScheduleDeleteService().start(user);
+                        break;
+                    default:
+                        System.out.println("1,2,3,q 값중 하나만 입력해주세요.");
+                        System.out.println("엔터키를 누르면 메인메뉴로 돌아갑니다.");
+                        scanner.nextLine();
+                }
+                return;
+            } catch (NumberFormatException e) {
+                return;
             }
         }
     }
