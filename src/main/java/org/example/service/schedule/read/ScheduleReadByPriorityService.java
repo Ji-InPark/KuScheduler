@@ -39,8 +39,7 @@ public class ScheduleReadByPriorityService {
                 }
 
                 var subject = String.format(
-                        "|%32s중요도: %-" + priority * 2
-                                + "s%30s|",
+                        "|%32s중요도: %-6s%30s|",
                         "",
                         priorityString(priority),
                         "");
