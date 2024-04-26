@@ -142,7 +142,6 @@ public class ScheduleCreateService {
 
     private void printScheduleCreateMenu() {
         System.out.println("<스케줄 추가>");
-        System.out.println("b를 입력하면 스케줄 추가/변경/삭제 화면으로, 이를 입력하면 스케줄 메뉴 화면으로 돌아갑니다.");
         System.out.println(
                 "(일정 제목은 한글, 알파벳 대소문자('a'-'z', 'A'-'Z')와 숫자('0'-'9')로 조합하여 15자 이내로 작성해주세요!)");
         System.out.println("========================================");
