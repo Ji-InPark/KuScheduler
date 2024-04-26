@@ -157,7 +157,12 @@ public class ScheduleUpdateService {
     }
 
     private boolean isValidPriority(String priority) {
-        return priority.matches("^[1-3]$");
+        try {
+            var priorityInt = Integer.parseInt(priority);
+            return priorityInt >= 1 && priorityInt <= 3;
+        } catch (NumberFormatException e) {
+            return false;
+        }
     }
 
     private boolean isValidTitle(String title) {
