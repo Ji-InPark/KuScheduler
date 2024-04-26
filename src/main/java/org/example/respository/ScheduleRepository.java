@@ -86,10 +86,10 @@ public class ScheduleRepository {
         return schedules.values().stream()
                 .filter(schedule -> schedule.userId == userId)
                 .filter(schedule ->
-                        (schedule.startDate.after(startOfDay)
-                                && schedule.startDate.before(endOfDay))
-                                || (schedule.endDate.after(startOfDay)
-                                && schedule.endDate.before(endOfDay)))
+                        !((schedule.startDate.after(startOfDay)
+                                && startOfDay.before(schedule.endDate))
+                                || (schedule.startDate.after(endOfDay)
+                                && endOfDay.before(schedule.endDate))))
                 .toList();
     }
 
