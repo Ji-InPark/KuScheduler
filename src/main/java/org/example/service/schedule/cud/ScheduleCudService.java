@@ -34,7 +34,6 @@ public class ScheduleCudService {
                         System.out.println("엔터키를 누르면 메인메뉴로 돌아갑니다.");
                         scanner.nextLine();
                 }
-                return;
             } catch (NumberFormatException e) {
                 return;
             }
