@@ -63,7 +63,7 @@ public class ScheduleReadByDateService {
                 continue;
             }
 
-            Date date = null;
+            Date date;
             try {
                 date = new GregorianCalendar(2024, month - 1, day).getTime();
             } catch (IllegalArgumentException e) {
@@ -79,8 +79,8 @@ public class ScheduleReadByDateService {
             }
 
             var subject = String.format(
-                    "|                       %02d月 %02d日                         |\n",
-                    month, day);
+                    "|%33s%02d月 %02d日%34s|",
+                    "", month, day, "");
             PrintService.getInstance().printScheduleHeaderWithUserInfo(user, subject);
             PrintService.getInstance().printSchedules(schedules);
         } while (true);
