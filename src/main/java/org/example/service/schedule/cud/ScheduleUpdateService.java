@@ -131,8 +131,9 @@ public class ScheduleUpdateService {
             System.out.print("추가한 일정을 저장하시겠습니까? (예: 1, 아니오: 2): ");
             var saveInput = scanner.nextLine().trim();
             if (saveInput.equals("1")) {
-                ScheduleRepository.getInstance().updateSchedule(schedule.id, schedule.name,
-                        schedule.startDate, schedule.endDate, schedule.priority, user.id);
+                ScheduleRepository.getInstance().updateSchedule(schedule.id, dummySchedule.name,
+                        dummySchedule.startDate, dummySchedule.endDate, dummySchedule.priority,
+                        user.id);
                 System.out.println("성공적으로 저장되었습니다.");
                 return;
             } else if (saveInput.equals("2")) {
