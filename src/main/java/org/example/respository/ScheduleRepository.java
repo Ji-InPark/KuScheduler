@@ -10,6 +10,7 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
+import java.text.SimpleDateFormat;
 import java.time.YearMonth;
 import java.time.ZoneId;
 import java.util.Date;
@@ -78,18 +79,16 @@ public class ScheduleRepository {
     }
 
     public List<Schedule> findAllByUserIdAndDate(int userId, Date date) {
-        var startOfDay = Date.from(date.toInstant().atZone(ZoneId.systemDefault()).toLocalDate()
-                .atStartOfDay(ZoneId.systemDefault()).toInstant());
-        var endOfDay = Date.from(date.toInstant().atZone(ZoneId.systemDefault()).toLocalDate()
-                .atTime(23, 59, 59).atZone(ZoneId.systemDefault()).toInstant());
+        var formatter = new SimpleDateFormat("MMdd");
+        var dateNumber = Integer.parseInt(formatter.format(date));
 
         return schedules.values().stream()
                 .filter(schedule -> schedule.userId == userId)
                 .filter(schedule ->
-                        !((schedule.startDate.after(startOfDay)
-                                && startOfDay.before(schedule.endDate))
-                                || (schedule.startDate.after(endOfDay)
-                                && endOfDay.before(schedule.endDate))))
+                        Integer.parseInt(formatter.format(schedule.startDate)) <= dateNumber
+                                && dateNumber <= Integer.parseInt(
+                                formatter.format(schedule.endDate))
+                )
                 .toList();
     }
 
