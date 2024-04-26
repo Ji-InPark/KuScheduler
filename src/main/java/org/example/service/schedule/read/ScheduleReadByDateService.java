@@ -116,7 +116,7 @@ public class ScheduleReadByDateService {
                 }
 
                 var subject = String.format(
-                        "|                          %02d月                          |\n", month);
+                        "|%36s%02d月%36s|", "", month, "");
                 PrintService.getInstance().printScheduleHeaderWithUserInfo(user, subject);
                 PrintService.getInstance().printSchedules(schedules);
             } catch (NumberFormatException e) {
