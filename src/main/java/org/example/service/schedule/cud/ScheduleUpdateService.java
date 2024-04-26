@@ -130,18 +130,22 @@ public class ScheduleUpdateService {
         do {
             System.out.print("추가한 일정을 저장하시겠습니까? (예: 1, 아니오: 2): ");
             var saveInput = scanner.nextLine().trim();
-            if (saveInput.equals("1")) {
-                ScheduleRepository.getInstance().updateSchedule(schedule.id, dummySchedule.name,
-                        dummySchedule.startDate, dummySchedule.endDate, dummySchedule.priority,
-                        user.id);
-                System.out.println("성공적으로 저장되었습니다.");
-                return;
-            } else if (saveInput.equals("2")) {
-                System.out.println("저장이 취소되었습니다.");
-                return;
-            }
+            try {
+                var save = Integer.parseInt(saveInput);
 
-            System.out.println("Error! 형식에 맞게 입력해주세요.");
+                if (save == 1) {
+                    ScheduleRepository.getInstance().updateSchedule(schedule.id, dummySchedule.name,
+                            dummySchedule.startDate, dummySchedule.endDate, dummySchedule.priority,
+                            user.id);
+                    System.out.println("성공적으로 저장되었습니다.");
+                    return;
+                } else if (save == 2) {
+                    System.out.println("저장이 취소되었습니다.");
+                    return;
+                }
+            } catch (NumberFormatException e) {
+                System.out.println("Error! 형식에 맞게 입력해주세요.");
+            }
         } while (true);
     }
 

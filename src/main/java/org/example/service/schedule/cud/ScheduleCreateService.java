@@ -67,14 +67,20 @@ public class ScheduleCreateService {
         do {
             System.out.print("추가한 일정을 저장하시겠습니까? (예: 1, 아니오: 2): ");
             var saveInput = scanner.nextLine().trim();
-            if (saveInput.equals("1")) {
-                ScheduleRepository.getInstance()
-                        .addSchedule(title, startDate, endDate, priority, user.id);
-                System.out.println("성공적으로 저장되었습니다.");
-                return false;
-            } else if (saveInput.equals("2")) {
-                System.out.println("저장이 취소되었습니다.");
-                return false;
+            try {
+                var save = Integer.parseInt(saveInput);
+                if (save == 1) {
+                    ScheduleRepository.getInstance()
+                            .addSchedule(title, startDate, endDate, priority, user.id);
+                    System.out.println("성공적으로 저장되었습니다.");
+                    return false;
+                } else if (save == 2) {
+                    System.out.println("저장이 취소되었습니다.");
+                    return false;
+                }
+            } catch (NumberFormatException e) {
+                System.out.println("Error! 형식에 맞게 입력해주세요.");
+                continue;
             }
 
             System.out.println("Error! 형식에 맞게 입력해주세요.");
