@@ -39,8 +39,11 @@ public class ScheduleReadByPriorityService {
                 }
 
                 var subject = String.format(
-                        "|                      중요도: %-3s                        |\n",
-                        priorityString(priority));
+                        "|%32s중요도: %-" + priority * 2
+                                + "s%30s|",
+                        "",
+                        priorityString(priority),
+                        "");
                 PrintService.getInstance().printScheduleHeaderWithUserInfo(user, subject);
                 PrintService.getInstance().printSchedules(schedules);
             } catch (NumberFormatException e) {
