@@ -15,24 +15,29 @@ public class ScheduleReadService {
         while (true) {
             printAllSchedule();
             printScheduleMenu();
-            int choice = getUserInput();
-            switch (choice) {
-                case 1:
-                    if (new ScheduleReadByDateService().start(user)) {
+
+            try {
+                var input = scanner.nextLine().trim();
+                switch (input) {
+                    case "1":
+                        if (new ScheduleReadByDateService().start(user)) {
+                            return;
+                        }
+                        break;
+                    case "2":
+                        if (new ScheduleReadByPriorityService().start(user)) {
+                            return;
+                        }
+                        break;
+                    case "q":
                         return;
-                    }
-                    break;
-                case 2:
-                    if (new ScheduleReadByPriorityService().start(user)) {
-                        return;
-                    }
-                    break;
-                case 3:
-                    return;
-                default:
-                    System.out.println("1,2,q 값중 하나만 입력해주세요.");
-                    System.out.println("엔터키를 누르면 메인메뉴로 돌아갑니다.");
-                    scanner.nextLine();
+                    default:
+                        System.out.println("1,2,q 값중 하나만 입력해주세요.");
+                        System.out.println("엔터키를 누르면 메인메뉴로 돌아갑니다.");
+                        scanner.nextLine();
+                }
+            } catch (NumberFormatException e) {
+                return;
             }
         }
     }
@@ -48,17 +53,5 @@ public class ScheduleReadService {
         System.out.println("2) 중요도별 스케줄 조회 ");
         System.out.println("* 'q'를 입력시 스케줄 메뉴로 돌아갑니다.");
         System.out.print("메뉴를 선택해주세요: ");
-    }
-
-    private int getUserInput() {
-        try {
-            var input = scanner.nextLine().trim();
-            if (input.equals("q")) {
-                return 3;
-            }
-            return Integer.parseInt(input);
-        } catch (NumberFormatException e) {
-            return -1;
-        }
     }
 }
