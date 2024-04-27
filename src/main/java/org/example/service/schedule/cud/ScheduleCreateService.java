@@ -21,6 +21,7 @@ public class ScheduleCreateService {
         if (!isValidTitle(title)) {
             System.out.println("Error! 스케줄 이름이 형식에 맞게 입력되지 않았습니다.");
             System.out.println("엔터키를 누르면 이전 화면으로 돌아갑니다.");
+            scanner.nextLine();
             return false;
         }
 
@@ -30,6 +31,7 @@ public class ScheduleCreateService {
         if (startDate == null) {
             System.out.println("Error! 시작 날짜 및 시간이 형식에 맞게 입력되지 않았습니다.");
             System.out.println("엔터키를 누르면 이전 화면으로 돌아갑니다.");
+            scanner.nextLine();
             return false;
         }
 
@@ -39,12 +41,14 @@ public class ScheduleCreateService {
         if (endDate == null) {
             System.out.println("Error! 종료 날짜 및 시간이 형식에 맞게 입력되지 않았습니다.");
             System.out.println("엔터키를 누르면 이전 화면으로 돌아갑니다.");
+            scanner.nextLine();
             return false;
         }
 
         if (startDate.after(endDate)) {
             System.out.println("Error! 종료 시간이 시작 시간보다 앞서있습니다.");
             System.out.println("엔터키를 누르면 이전 화면으로 돌아갑니다.");
+            scanner.nextLine();
             return false;
         }
 
@@ -53,6 +57,7 @@ public class ScheduleCreateService {
         if (!isValidPriority(priorityInput)) {
             System.out.println("Error! 중요도가 형식에 맞게 입력되지 않았습니다.");
             System.out.println("엔터키를 누르면 이전 화면으로 돌아갑니다.");
+            scanner.nextLine();
             return false;
         }
         var priority = Integer.parseInt(priorityInput);
@@ -61,6 +66,7 @@ public class ScheduleCreateService {
             System.out.println("Error! 해당 기간에 중복된 중요도의 스케줄이 이미 존재합니다.");
             System.out.println("기존 일정의 중요도를 수정하시려면 변경창에서 수정해주시길 바랍니다.");
             System.out.println("엔터키를 누르면 이전 화면으로 돌아갑니다.");
+            scanner.nextLine();
             return false;
         }
 
