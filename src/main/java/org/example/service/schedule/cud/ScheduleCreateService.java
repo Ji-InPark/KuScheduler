@@ -94,6 +94,10 @@ public class ScheduleCreateService {
     }
 
     private boolean isValidSchedule(Date startDate, Date endDate, int priority) {
+        if (priority != 3) {
+            return true;
+        }
+
         return ScheduleRepository.getInstance().findAllByUserIdAndPriority(user.id, priority)
                 .stream()
                 .filter(schedule ->
