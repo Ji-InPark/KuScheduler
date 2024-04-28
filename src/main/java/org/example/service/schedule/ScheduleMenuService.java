@@ -23,6 +23,7 @@ public class ScheduleMenuService {
                 case 3:
                     System.out.println("정상적으로 로그아웃 되었습니다.");
                     System.out.println("엔터키를 누르면 메인메뉴로 돌아갑니다.");
+                    scanner.nextLine();
                     return;
                 default:
                     System.out.println("1~3 사이의 값만 입력해주세요.");
