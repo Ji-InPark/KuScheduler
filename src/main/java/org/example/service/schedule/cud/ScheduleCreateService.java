@@ -4,7 +4,7 @@ import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.Scanner;
 import org.example.entity.User;
-import org.example.respository.ScheduleRepository;
+import org.example.repository.ScheduleRepository;
 
 public class ScheduleCreateService {
 

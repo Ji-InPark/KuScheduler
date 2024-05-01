@@ -1,4 +1,4 @@
-package org.example.respository;
+package org.example.repository;
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;

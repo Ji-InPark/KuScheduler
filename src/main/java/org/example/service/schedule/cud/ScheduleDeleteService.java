@@ -2,7 +2,7 @@ package org.example.service.schedule.cud;
 
 import java.util.Scanner;
 import org.example.entity.User;
-import org.example.respository.ScheduleRepository;
+import org.example.repository.ScheduleRepository;
 
 public class ScheduleDeleteService {
 

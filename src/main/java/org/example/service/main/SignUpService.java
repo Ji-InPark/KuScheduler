@@ -1,7 +1,7 @@
 package org.example.service.main;
 
 import java.util.Scanner;
-import org.example.respository.UserRepository;
+import org.example.repository.UserRepository;
 
 public class SignUpService {
 
