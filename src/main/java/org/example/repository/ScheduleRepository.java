@@ -129,7 +129,8 @@ public class ScheduleRepository {
             while ((line = br.readLine()) != null) {
                 var data = line.split(",");
                 var schedule = new Schedule(Integer.parseInt(data[0]), data[1], data[2], data[3],
-                        Integer.parseInt(data[4]), Integer.parseInt(data[5]));
+                        Integer.parseInt(data[4]), Integer.parseInt(data[5]),
+                        Boolean.parseBoolean(data[6]));
                 schedules.put(schedule.id, schedule);
             }
         } catch (FileNotFoundException e) {

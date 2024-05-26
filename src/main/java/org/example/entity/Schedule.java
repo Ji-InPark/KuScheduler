@@ -11,29 +11,50 @@ public class Schedule {
     public Date startDate;
     public Date endDate;
     public int priority;
+    public boolean isRepeated;
 
     public Schedule(int id, String name, String startDate, String endDate, int priority,
             int userId) {
-        this.id = id;
-        this.name = name;
-        this.priority = priority;
-        this.startDate = convertStringToDate(startDate);
-        this.endDate = convertStringToDate(endDate);
-        this.userId = userId;
+        this(id, name, startDate, endDate, priority, userId, false);
     }
 
     public Schedule(int id, String name, Date startDate, Date endDate, int priority, int userId) {
+        this(id, name, startDate, endDate, priority, userId, false);
+    }
+
+    public Schedule(int id, String name, String startDate, String endDate, int priority,
+            int userId, boolean isRepeated) {
+        this(id, name, convertStringToDate(startDate), convertStringToDate(endDate), priority,
+                userId, isRepeated);
+    }
+
+    public Schedule(int id, String name, Date startDate, Date endDate, int priority, int userId,
+            boolean isRepeated) {
         this.id = id;
         this.name = name;
         this.priority = priority;
         this.startDate = startDate;
         this.endDate = endDate;
         this.userId = userId;
+        this.isRepeated = isRepeated;
+    }
+
+    private static Date convertStringToDate(String date) {
+        var dateAndTime = date.split("_");
+        var monthAndDay = dateAndTime[0].split("/");
+        var timeAndMinute = dateAndTime[1].split(":");
+        var year = 2024;
+        var month = Integer.parseInt(monthAndDay[0]) - 1;
+        var day = Integer.parseInt(monthAndDay[1]);
+        var time = Integer.parseInt(timeAndMinute[0]);
+        var minute = Integer.parseInt(timeAndMinute[1]);
+
+        return new GregorianCalendar(year, month, day, time, minute).getTime();
     }
 
     public String convertToCsvRow() {
         return id + "," + name + "," + convertDateToString(startDate) + ","
-                + convertDateToString(endDate) + "," + priority + "," + userId;
+                + convertDateToString(endDate) + "," + priority + "," + userId + "," + isRepeated;
     }
 
     public String getStartDate() {
@@ -62,18 +83,5 @@ public class Schedule {
 
         return String.format("%02d", month) + "/" + String.format("%02d", day) + "_"
                 + String.format("%02d", hour) + ":" + String.format("%02d", minute);
-    }
-
-    private Date convertStringToDate(String date) {
-        var dateAndTime = date.split("_");
-        var monthAndDay = dateAndTime[0].split("/");
-        var timeAndMinute = dateAndTime[1].split(":");
-        var year = 2024;
-        var month = Integer.parseInt(monthAndDay[0]) - 1;
-        var day = Integer.parseInt(monthAndDay[1]);
-        var time = Integer.parseInt(timeAndMinute[0]);
-        var minute = Integer.parseInt(timeAndMinute[1]);
-
-        return new GregorianCalendar(year, month, day, time, minute).getTime();
     }
 }
