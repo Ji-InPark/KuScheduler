@@ -33,10 +33,16 @@ public class ScheduleRepository {
 
     public void addSchedule(String name, Date startDate, Date endDate, int priority,
             int userId) {
+        addSchedule(name, startDate, endDate, priority, userId, false);
+    }
+
+    public void addSchedule(String name, Date startDate, Date endDate, int priority,
+            int userId, boolean isRepeated) {
         var maxId = schedules.keySet().stream()
                 .max(Integer::compare)
                 .orElse(0);
-        var schedule = new Schedule(maxId + 1, name, startDate, endDate, priority, userId);
+        var schedule = new Schedule(maxId + 1, name, startDate, endDate, priority, userId,
+                isRepeated);
         schedules.put(schedule.id, schedule);
         saveSchedule();
     }
@@ -130,7 +136,7 @@ public class ScheduleRepository {
                 var data = line.split(",");
                 var schedule = new Schedule(Integer.parseInt(data[0]), data[1], data[2], data[3],
                         Integer.parseInt(data[4]), Integer.parseInt(data[5]),
-                        Boolean.parseBoolean(data[6]));
+                        data.length == 7 && Boolean.parseBoolean(data[6]));
                 schedules.put(schedule.id, schedule);
             }
         } catch (FileNotFoundException e) {

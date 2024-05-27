@@ -1,22 +1,24 @@
-package org.example.service.schedule.cud;
+package org.example.service.schedule.repeat;
 
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.Scanner;
 import org.example.entity.User;
 import org.example.repository.ScheduleRepository;
 
-public class ScheduleCreateService {
+public class ScheduleMonthlyCreateService {
 
     private final Scanner scanner = new Scanner(System.in);
     User user;
 
-
     public boolean start(User user) {
         this.user = user;
-        printScheduleCreateMenu();
+        System.out.println(
+                "(일정 제목은 한글, 알파벳 대소문자('a'-'z', 'A'-'Z')와 숫자('0'-'9')로 조합하여 15자 이내로 작성해주세요!)");
+        System.out.println("========================================");
 
-        System.out.print("새로운 일정 제목을 입력해주세요: ");
+        System.out.print("반복할 일정 제목을 입력해주세요: ");
         var title = scanner.nextLine().trim();
         if (!isValidTitle(title)) {
             System.out.println("Error! 스케줄 이름이 형식에 맞게 입력되지 않았습니다.");
@@ -25,7 +27,7 @@ public class ScheduleCreateService {
             return false;
         }
 
-        System.out.print("추가할 스케줄의 시작 날짜와 시간(예: 4/22 15:30)을 입력해주세요: ");
+        System.out.print("반복할 스케줄의 시작 날짜와 시간(예: 4/22 15:30)을 입력해주세요: ");
         var startDateInput = scanner.nextLine().trim();
         var startDate = parseDateAndValidate(startDateInput);
         if (startDate == null) {
@@ -35,7 +37,7 @@ public class ScheduleCreateService {
             return false;
         }
 
-        System.out.print("추가할 스케줄의 종료 날짜와 시간(예: 4/22 15:30)을 입력해주세요: ");
+        System.out.print("반복할 스케줄의 종료 날짜와 시간(예: 4/22 15:30)을 입력해주세요: ");
         var endDateInput = scanner.nextLine().trim();
         var endDate = parseDateAndValidate(endDateInput);
         if (endDate == null) {
@@ -52,7 +54,14 @@ public class ScheduleCreateService {
             return false;
         }
 
-        System.out.print("추가할 스케줄의 중요도를 입력해주세요: ");
+        if (startDate.getMonth() != endDate.getMonth()) {
+            System.out.println("Error! 시작 날짜과 종료 날짜가 같아야 합니다.");
+            System.out.println("엔터키를 누르면 이전 화면으로 돌아갑니다.");
+            scanner.nextLine();
+            return false;
+        }
+
+        System.out.print("반복할 스케줄의 중요도를 입력해주세요: ");
         var priorityInput = scanner.nextLine().trim();
         if (!isValidPriority(priorityInput)) {
             System.out.println("Error! 중요도가 형식에 맞게 입력되지 않았습니다.");
@@ -93,22 +102,26 @@ public class ScheduleCreateService {
         } while (true);
     }
 
-    // todo
+    //todo
     private boolean isValidSchedule(Date startDate, Date endDate, int priority) {
         if (priority != 3) {
             return true;
         }
 
+        var sdf = new SimpleDateFormat("MMddHHmmss");
+
         return ScheduleRepository.getInstance().findAllByUserIdAndPriority(user.id, priority)
                 .stream()
-                .filter(schedule ->
-                        (startDate.after(schedule.startDate)
-                                && startDate.before(schedule.endDate))
-                                || (endDate.after(schedule.startDate)
-                                && endDate.before(schedule.endDate)
-                                || startDate.before(schedule.startDate)
-                                && endDate.after(schedule.endDate)
-                        )
+                .filter(schedule -> {
+                            var start = Integer.parseInt(sdf.format(startDate));
+                            var end = Integer.parseInt(sdf.format(endDate));
+                            var scheduleStart = Integer.parseInt(sdf.format(schedule.startDate));
+                            var scheduleEnd = Integer.parseInt(sdf.format(schedule.endDate));
+                            return startDate.before(schedule.endDate) && (start >= scheduleStart
+                                    && start <= scheduleEnd)
+                                    || (end >= scheduleStart && end <= scheduleEnd)
+                                    || (start <= scheduleStart && end >= scheduleEnd);
+                        }
                 ).toList().isEmpty();
     }
 
@@ -159,12 +172,4 @@ public class ScheduleCreateService {
     private boolean isValidTitle(String title) {
         return title.matches("^[a-zA-Z0-9가-힣 ]{1,15}$");
     }
-
-    private void printScheduleCreateMenu() {
-        System.out.println("<스케줄 추가>");
-        System.out.println(
-                "(일정 제목은 한글, 알파벳 대소문자('a'-'z', 'A'-'Z')와 숫자('0'-'9')로 조합하여 15자 이내로 작성해주세요!)");
-        System.out.println("========================================");
-    }
-
 }

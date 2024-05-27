@@ -38,7 +38,7 @@ public class ScheduleMenuService {
         System.out.println("       Scheduler      ");
         System.out.println("----------------------");
         System.out.println("1) 스케줄 조회 ");
-        System.out.println("2) 스케줄 추가/변경/삭제 ");
+        System.out.println("2) 스케줄 추가/변경/삭제/반복 ");
         System.out.println("3) 로그아웃 ");
         System.out.print("메뉴를 선택해주세요: ");
     }
