@@ -23,11 +23,11 @@ public class FriendService {
                     new FriendScheduleReadService().start(user);
                     break;
                 case "2":
-
+                    new FriendDeleteService().start(user);
                     break;
                 default:
                     System.out.println("1,2 값중 하나만 입력해주세요.");
-                    System.out.println("엔터키를 누르면 메인메뉴로 돌아갑니다.");
+                    System.out.println("엔터키를 누르면 스케줄 메뉴로 돌아갑니다.");
                     scanner.nextLine();
             }
         } catch (NumberFormatException e) {

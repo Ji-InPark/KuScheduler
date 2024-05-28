@@ -85,4 +85,12 @@ public class FriendRepository {
         return friends.values().stream()
                 .anyMatch(friend -> friend.userId == id && friend.friendId == friendId);
     }
+
+    public void deleteFriend(int id, int friendId) {
+        var friend = friends.values().stream()
+                .filter(f -> f.userId == id && f.friendId == friendId)
+                .findFirst().get();
+        friends.remove(friend.id);
+        saveFriend();
+    }
 }

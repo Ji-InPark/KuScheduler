@@ -22,7 +22,7 @@ public class FriendScheduleReadService {
         var friend = UserRepository.getInstance().findUserByLoginId(friendLoginId);
         if (!FriendRepository.getInstance().isFriend(user.id, friend.id)) {
             System.out.println("등록되지 않은 친구입니다.");
-            System.out.println("엔터키를 누르면 메인메뉴로 돌아갑니다.");
+            System.out.println("엔터키를 누르면 스케줄 메뉴로 돌아갑니다.");
             scanner.nextLine();
             return;
         }
@@ -32,7 +32,7 @@ public class FriendScheduleReadService {
         var dateArray = inputDate.split("/");
         if (dateArray.length != 2) {
             System.out.println("날짜 입력 오류");
-            System.out.println("엔터키를 누르면 메인메뉴로 돌아갑니다.");
+            System.out.println("엔터키를 누르면 스케줄 메뉴로 돌아갑니다.");
             scanner.nextLine();
             return;
         }
@@ -45,7 +45,7 @@ public class FriendScheduleReadService {
             date = new GregorianCalendar(2024, month - 1, day).getTime();
         } catch (IllegalArgumentException e) {
             System.out.println("날짜 입력 오류");
-            System.out.println("엔터키를 누르면 메인메뉴로 돌아갑니다.");
+            System.out.println("엔터키를 누르면 스케줄 메뉴로 돌아갑니다.");
             scanner.nextLine();
             return;
         }
@@ -60,7 +60,7 @@ public class FriendScheduleReadService {
         PrintService.getInstance().printScheduleHeaderWithSubject(subject);
         PrintService.getInstance().printSchedules(schedules);
 
-        System.out.println("엔터키를 누르면 메인메뉴로 돌아갑니다.");
+        System.out.println("엔터키를 누르면 스케줄 메뉴로 돌아갑니다.");
         scanner.nextLine();
     }
 
