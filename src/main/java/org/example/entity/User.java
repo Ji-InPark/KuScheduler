@@ -17,4 +17,14 @@ public class User {
     public String convertToCsvRow() {
         return id + "," + name + "," + loginId + "," + password;
     }
+
+    public int getKoreanLength() {
+        var osName = System.getProperty("os.name");
+
+        if (osName.contains("Windows")) {
+            return name.getBytes().length - name.length();
+        }
+
+        return (name.getBytes().length - name.length()) / 2;
+    }
 }

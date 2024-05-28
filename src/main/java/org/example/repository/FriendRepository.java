@@ -81,4 +81,8 @@ public class FriendRepository {
         }
     }
 
+    public boolean isFriend(int id, int friendId) {
+        return friends.values().stream()
+                .anyMatch(friend -> friend.userId == id && friend.friendId == friendId);
+    }
 }

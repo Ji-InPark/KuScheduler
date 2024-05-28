@@ -61,6 +61,12 @@ public class PrintService {
         printScheduleHeader();
     }
 
+    public void printScheduleHeaderWithSubject(String subject) {
+        printHorizontalLine();
+        System.out.println(subject);
+        printScheduleHeader();
+    }
+
     private void printScheduleHeader() {
         printHorizontalLine();
         System.out.printf("|%-4s|%-30s|%-23s|%-5s|\n",
@@ -69,6 +75,24 @@ public class PrintService {
                 StringUtils.center("날짜/시간", 23),
                 StringUtils.center("중요도", 5)
         );
+        printHorizontalLine();
+    }
+
+    public void printFriendHeader() {
+        printHorizontalLine();
+        System.out.printf("|%-72s|\n", StringUtils.center("<친구 목록>", 72));
+        printHorizontalLine();
+        System.out.printf("|%-35s|%-35s|\n", StringUtils.center("이름", 35),
+                StringUtils.center("아이디", 35));
+        printHorizontalLine();
+    }
+
+    public void printFriends(List<User> friends) {
+        for (var friend : friends) {
+            System.out.printf("|%-" + (37 - friend.getKoreanLength()) + "s|%-38s|\n",
+                    StringUtils.center(friend.name, (37 - friend.getKoreanLength())),
+                    StringUtils.center(String.valueOf(friend.loginId), 38));
+        }
         printHorizontalLine();
     }
 

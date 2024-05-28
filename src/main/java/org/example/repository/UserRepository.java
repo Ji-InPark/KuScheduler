@@ -11,6 +11,7 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
 import java.util.HashMap;
+import java.util.List;
 import org.example.entity.User;
 
 public class UserRepository {
@@ -93,5 +94,11 @@ public class UserRepository {
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
+    }
+
+    public List<User> findAllByIds(List<Integer> friendIds) {
+        return userInfos.values().stream()
+                .filter(user -> friendIds.contains(user.id))
+                .toList();
     }
 }
