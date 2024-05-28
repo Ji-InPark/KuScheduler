@@ -93,4 +93,13 @@ public class FriendRepository {
         friends.remove(friend.id);
         saveFriend();
     }
+
+    public void addFriend(int id, int friendId) {
+        var maxId = friends.values().stream()
+                .mapToInt(f -> f.id)
+                .max().orElse(0);
+        var friend = new Friend(maxId + 1, id, friendId);
+        friends.put(friend.id, friend);
+        saveFriend();
+    }
 }
