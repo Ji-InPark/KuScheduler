@@ -16,6 +16,7 @@ import java.time.ZoneId;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Objects;
 import org.example.entity.Schedule;
 
 public class ScheduleRepository {
@@ -33,18 +34,26 @@ public class ScheduleRepository {
 
     public void addSchedule(String name, Date startDate, Date endDate, int priority,
             int userId) {
-        addSchedule(name, startDate, endDate, priority, userId, false);
+        addSchedule(name, startDate, endDate, priority, userId, null);
     }
 
     public void addSchedule(String name, Date startDate, Date endDate, int priority,
-            int userId, boolean isRepeated) {
+            int userId, Integer repeatedId) {
         var maxId = schedules.keySet().stream()
                 .max(Integer::compare)
                 .orElse(0);
         var schedule = new Schedule(maxId + 1, name, startDate, endDate, priority, userId,
-                isRepeated);
+                repeatedId);
         schedules.put(schedule.id, schedule);
         saveSchedule();
+    }
+
+    public int getMaxRepeatedId() {
+        return schedules.values().stream()
+                .map(schedule -> schedule.repeatedId)
+                .filter(Objects::nonNull)
+                .max(Integer::compare)
+                .orElse(0);
     }
 
     public void updateSchedule(int id, String name, Date startDate, Date endDate, int priority,
@@ -136,7 +145,7 @@ public class ScheduleRepository {
                 var data = line.split(",");
                 var schedule = new Schedule(Integer.parseInt(data[0]), data[1], data[2], data[3],
                         Integer.parseInt(data[4]), Integer.parseInt(data[5]),
-                        data.length == 7 && Boolean.parseBoolean(data[6]));
+                        data.length == 7 ? parseRepeatedId(data[6]) : null);
                 schedules.put(schedule.id, schedule);
             }
         } catch (FileNotFoundException e) {
@@ -151,6 +160,14 @@ public class ScheduleRepository {
             new FileWriter(file, false);
         } catch (IOException e) {
             throw new RuntimeException(e);
+        }
+    }
+
+    private Integer parseRepeatedId(String repeatedId) {
+        try {
+            return Integer.parseInt(repeatedId);
+        } catch (NumberFormatException e) {
+            return null;
         }
     }
 }

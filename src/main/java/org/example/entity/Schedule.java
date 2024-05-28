@@ -11,32 +11,32 @@ public class Schedule {
     public Date startDate;
     public Date endDate;
     public int priority;
-    public boolean isRepeated;
+    public Integer repeatedId;
 
     public Schedule(int id, String name, String startDate, String endDate, int priority,
             int userId) {
-        this(id, name, startDate, endDate, priority, userId, false);
+        this(id, name, startDate, endDate, priority, userId, null);
     }
 
     public Schedule(int id, String name, Date startDate, Date endDate, int priority, int userId) {
-        this(id, name, startDate, endDate, priority, userId, false);
+        this(id, name, startDate, endDate, priority, userId, null);
     }
 
     public Schedule(int id, String name, String startDate, String endDate, int priority,
-            int userId, boolean isRepeated) {
+            int userId, Integer repeatedId) {
         this(id, name, convertStringToDate(startDate), convertStringToDate(endDate), priority,
-                userId, isRepeated);
+                userId, repeatedId);
     }
 
     public Schedule(int id, String name, Date startDate, Date endDate, int priority, int userId,
-            boolean isRepeated) {
+            Integer repeatedId) {
         this.id = id;
         this.name = name;
         this.priority = priority;
         this.startDate = startDate;
         this.endDate = endDate;
         this.userId = userId;
-        this.isRepeated = isRepeated;
+        this.repeatedId = repeatedId;
     }
 
     private static Date convertStringToDate(String date) {
@@ -54,7 +54,7 @@ public class Schedule {
 
     public String convertToCsvRow() {
         return id + "," + name + "," + convertDateToString(startDate) + ","
-                + convertDateToString(endDate) + "," + priority + "," + userId + "," + isRepeated;
+                + convertDateToString(endDate) + "," + priority + "," + userId + "," + repeatedId;
     }
 
     public String getStartDate() {

@@ -87,17 +87,21 @@ public class ScheduleDailyCreateService {
             try {
                 var save = Integer.parseInt(saveInput);
                 if (save == 1) {
+                    var maxRepeatedId = ScheduleRepository.getInstance().getMaxRepeatedId();
                     var sdf = new SimpleDateFormat("yyyyMMdd");
 
                     while (!sdf.format(startDate).equals("20241231")) {
                         ScheduleRepository.getInstance()
-                                .addSchedule(title, startDate, endDate, priority, user.id);
+                                .addSchedule(title, startDate, endDate, priority, user.id,
+                                        maxRepeatedId + 1);
                         startDate = DateUtils.addDays(startDate, 1);
                         endDate = DateUtils.addDays(endDate, 1);
                     }
 
                     ScheduleRepository.getInstance()
-                            .addSchedule(title, startDate, endDate, priority, user.id, true);
+                            .addSchedule(title, startDate, endDate, priority, user.id,
+                                    maxRepeatedId + 1);
+
                     System.out.println("성공적으로 저장되었습니다.");
                     return false;
                 } else if (save == 2) {
