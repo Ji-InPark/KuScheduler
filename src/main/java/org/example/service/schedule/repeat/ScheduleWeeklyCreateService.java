@@ -1,5 +1,6 @@
 package org.example.service.schedule.repeat;
 
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.Scanner;
@@ -12,6 +13,7 @@ public class ScheduleWeeklyCreateService {
     User user;
 
     public boolean start(User user) {
+        this.user = user;
         System.out.println(
                 "(일정 제목은 한글, 알파벳 대소문자('a'-'z', 'A'-'Z')와 숫자('0'-'9')로 조합하여 15자 이내로 작성해주세요!)");
         System.out.println("========================================");
@@ -53,8 +55,9 @@ public class ScheduleWeeklyCreateService {
         }
 
         if (startDate.getMonth() == endDate.getMonth() &&
-                startDate.getDate() == endDate.getDate()) {
-            System.out.println("Error! 시작 날짜과 종료 날짜가 같아야 합니다.");
+                endDate.getDate() - startDate.getDate() < 7 &&
+                startDate.getDay() <= endDate.getDay()) {
+            System.out.println("Error! 시작 날짜과 종료 날짜가 일주일 이내여야 합니다.");
             System.out.println("엔터키를 누르면 이전 화면으로 돌아갑니다.");
             scanner.nextLine();
             return false;
@@ -101,19 +104,28 @@ public class ScheduleWeeklyCreateService {
         } while (true);
     }
 
-    //todo
     private boolean isValidSchedule(Date startDate, Date endDate, int priority) {
         if (priority != 3) {
             return true;
         }
 
+        var sdf = new SimpleDateFormat("HHmm");
+
         return ScheduleRepository.getInstance().findAllByUserIdAndPriority(user.id, priority)
                 .stream()
-                .filter(schedule ->
-                        (startDate.after(schedule.startDate)
-                                && startDate.before(schedule.endDate))
-                                || (endDate.after(schedule.startDate)
-                                && endDate.before(schedule.endDate))
+                .filter(schedule -> {
+                            var start = Integer.parseInt(startDate.getDate() + sdf.format(startDate));
+                            var end = Integer.parseInt(endDate.getDate() + sdf.format(endDate));
+                            var scheduleStart = Integer.parseInt(schedule.startDate.getDate()
+                                    + sdf.format(schedule.startDate));
+                            var scheduleEnd = Integer.parseInt(schedule.endDate.getDate()
+                                    + sdf.format(schedule.endDate));
+
+                            return startDate.before(schedule.endDate) && (start >= scheduleStart
+                                    && start <= scheduleEnd)
+                                    || (end >= scheduleStart && end <= scheduleEnd)
+                                    || (start <= scheduleStart && end >= scheduleEnd);
+                        }
                 ).toList().isEmpty();
     }
 

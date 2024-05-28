@@ -55,7 +55,7 @@ public class ScheduleMonthlyCreateService {
         }
 
         if (startDate.getMonth() != endDate.getMonth()) {
-            System.out.println("Error! 시작 날짜과 종료 날짜가 같아야 합니다.");
+            System.out.println("Error! 시작 날짜과 종료 날짜가 같은 달이어야 합니다.");
             System.out.println("엔터키를 누르면 이전 화면으로 돌아갑니다.");
             scanner.nextLine();
             return false;
@@ -110,7 +110,7 @@ public class ScheduleMonthlyCreateService {
             System.out.println("Error! 형식에 맞게 입력해주세요.");
         } while (true);
     }
-    
+
     private Boolean isValidSchedule(Date startDate, Date endDate, int priority) {
         if (priority != 3) {
             return true;

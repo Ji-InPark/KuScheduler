@@ -93,7 +93,6 @@ public class ScheduleCreateService {
         } while (true);
     }
 
-    // todo
     private boolean isValidSchedule(Date startDate, Date endDate, int priority) {
         if (priority != 3) {
             return true;
@@ -104,10 +103,10 @@ public class ScheduleCreateService {
                 .filter(schedule ->
                         (startDate.after(schedule.startDate)
                                 && startDate.before(schedule.endDate))
-                                || (endDate.after(schedule.startDate)
-                                && endDate.before(schedule.endDate)
-                                || startDate.before(schedule.startDate)
-                                && endDate.after(schedule.endDate)
+                                || ((endDate.after(schedule.startDate)
+                                && endDate.before(schedule.endDate))
+                                || (startDate.before(schedule.startDate)
+                                && endDate.after(schedule.endDate))
                         )
                 ).toList().isEmpty();
     }
