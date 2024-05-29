@@ -63,7 +63,13 @@ public class ScheduleRepository {
     }
 
     public void deleteSchedule(int id) {
-        schedules.remove(id);
+        var schedule = schedules.get(id);
+        if (schedule.repeatedId != null) {
+            schedules.values().removeIf(s -> s.repeatedId == schedule.repeatedId);
+        } else {
+            schedules.remove(id);
+        }
+
         saveSchedule();
     }
 
