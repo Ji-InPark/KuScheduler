@@ -13,6 +13,20 @@ public class ScheduleDailyCreateService {
     private final Scanner scanner = new Scanner(System.in);
     User user;
 
+    private static boolean isValidDate(String input) {
+        String formatString = "MM/dd";
+
+        try {
+            SimpleDateFormat format = new SimpleDateFormat(formatString);
+            format.setLenient(false);
+            format.parse(input);
+        } catch (Exception e) {
+            return false;
+        }
+
+        return true;
+    }
+
     public boolean start(User user) {
         this.user = user;
         System.out.println(
@@ -28,25 +42,37 @@ public class ScheduleDailyCreateService {
             return false;
         }
 
-        System.out.print("반복할 스케줄의 시작 날짜와 시간(예: 4/22 15:30)을 입력해주세요: ");
-        var startDateInput = scanner.nextLine().trim();
-        var startDate = parseDateAndValidate(startDateInput);
-        if (startDate == null) {
-            System.out.println("Error! 시작 날짜 및 시간이 형식에 맞게 입력되지 않았습니다.");
+        System.out.print("반복할 스케줄의 시작 날짜(예: 4/22)을 입력해주세요: ");
+        var startDayInput = scanner.nextLine().trim();
+        if (!isValidDate(startDayInput)) {
+            System.out.println("Error! 시작 날짜가 형식에 맞게 입력되지 않았습니다.");
             System.out.println("엔터키를 누르면 이전 화면으로 돌아갑니다.");
             scanner.nextLine();
             return false;
         }
 
-        System.out.print("반복할 스케줄의 종료 날짜와 시간(예: 4/22 15:30)을 입력해주세요: ");
-        var endDateInput = scanner.nextLine().trim();
-        var endDate = parseDateAndValidate(endDateInput);
-        if (endDate == null) {
-            System.out.println("Error! 종료 날짜 및 시간이 형식에 맞게 입력되지 않았습니다.");
+        System.out.print("반복할 스케줄의 시작 시간(예: 15:30)과 종료 시간(예: 16:30)을 입력해주세요: ");
+        var timeInput = scanner.nextLine().trim();
+        var timeArr = timeInput.split(" ");
+        if (timeArr.length != 2) {
+            System.out.println("Error! 시간이 형식에 맞게 입력되지 않았습니다.");
             System.out.println("엔터키를 누르면 이전 화면으로 돌아갑니다.");
             scanner.nextLine();
             return false;
         }
+
+        var startTime = timeArr[0];
+        var endTime = timeArr[1];
+        if (!startTime.matches("([01]?[0-9]|2[0-3]):[0-5][0-9]")
+                || !endTime.matches("([01]?[0-9]|2[0-3]):[0-5][0-9]")) {
+            System.out.println("Error! 시간이 형식에 맞게 입력되지 않았습니다.");
+            System.out.println("엔터키를 누르면 이전 화면으로 돌아갑니다.");
+            scanner.nextLine();
+            return false;
+        }
+
+        var startDate = parseDateAndValidate(startDayInput + " " + startTime);
+        var endDate = parseDateAndValidate(startDayInput + " " + endTime);
 
         if (startDate.after(endDate)) {
             System.out.println("Error! 종료 시간이 시작 시간보다 앞서있습니다.");
