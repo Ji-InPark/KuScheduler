@@ -38,12 +38,12 @@ public class ScheduleCudService {
                         }
                         break;
                     default:
-                        System.out.println("1,2,3,q 값중 하나만 입력해주세요.");
+                        System.out.println("1,2,3,4,q 값중 하나만 입력해주세요.");
                         System.out.println("엔터키를 누르면 메인메뉴로 돌아갑니다.");
                         scanner.nextLine();
                 }
             } catch (NumberFormatException e) {
-                System.out.println("1,2,3,q 값중 하나만 입력해주세요.");
+                System.out.println("1,2,3,4,q 값중 하나만 입력해주세요.");
                 System.out.println("엔터키를 누르면 메인메뉴로 돌아갑니다.");
                 scanner.nextLine();
             }
