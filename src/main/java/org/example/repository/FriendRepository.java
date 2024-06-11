@@ -20,7 +20,7 @@ public class FriendRepository {
     HashMap<Integer, Friend> friends = new HashMap<>();
 
     private FriendRepository() {
-        initSchedules();
+        initFriends();
     }
 
     public static FriendRepository getInstance() {
@@ -52,7 +52,7 @@ public class FriendRepository {
         }
     }
 
-    private void initSchedules() {
+    private void initFriends() {
         try {
             var file = new File("FriendData.csv");
             file.createNewFile();
