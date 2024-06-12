@@ -14,18 +14,21 @@ public class ScheduleRepeatService {
             printScheduleRepeatMenu();
             try {
                 var input = scanner.nextLine().trim();
-                switch (input) {
-                    case "1":
+                if (input.equals("q")) {
+                    return true;
+                }
+
+                var inputNum = Integer.parseInt(input);
+                switch (inputNum) {
+                    case 1:
                         new ScheduleDailyCreateService().start(user);
                         break;
-                    case "2":
+                    case 2:
                         new ScheduleWeeklyCreateService().start(user);
                         break;
-                    case "3":
+                    case 3:
                         new ScheduleMonthlyCreateService().start(user);
                         break;
-                    case "q":
-                        return true;
                     default:
                         System.out.println("1~3 사이의 값만 입력해주세요.");
                         System.out.println("엔터키를 누르면 메인 메뉴로 돌아갑니다.");

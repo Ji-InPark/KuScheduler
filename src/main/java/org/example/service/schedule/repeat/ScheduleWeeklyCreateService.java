@@ -4,6 +4,7 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.Scanner;
+import org.apache.commons.lang3.time.DateUtils;
 import org.example.entity.User;
 import org.example.repository.ScheduleRepository;
 
@@ -54,9 +55,9 @@ public class ScheduleWeeklyCreateService {
             return false;
         }
 
-        if (startDate.getMonth() == endDate.getMonth() &&
+        if (!(startDate.getMonth() == endDate.getMonth() &&
                 endDate.getDate() - startDate.getDate() < 7 &&
-                startDate.getDay() <= endDate.getDay()) {
+                startDate.getDay() <= endDate.getDay())) {
             System.out.println("Error! 시작 날짜과 종료 날짜가 일주일 이내여야 합니다.");
             System.out.println("엔터키를 누르면 이전 화면으로 돌아갑니다.");
             scanner.nextLine();
@@ -87,8 +88,15 @@ public class ScheduleWeeklyCreateService {
             try {
                 var save = Integer.parseInt(saveInput);
                 if (save == 1) {
-                    ScheduleRepository.getInstance()
-                            .addSchedule(title, startDate, endDate, priority, user.id);
+                    var maxRepeatedId = ScheduleRepository.getInstance().getMaxRepeatedId();
+
+                    while (1900 + endDate.getYear() == 2024) {
+                        ScheduleRepository.getInstance()
+                                .addSchedule(title, startDate, endDate, priority, user.id,
+                                        maxRepeatedId + 1);
+                        startDate = DateUtils.addWeeks(startDate, 1);
+                        endDate = DateUtils.addWeeks(endDate, 1);
+                    }
                     System.out.println("성공적으로 저장되었습니다.");
                     return false;
                 } else if (save == 2) {
