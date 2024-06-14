@@ -1,5 +1,6 @@
 package org.example.service.schedule.friend;
 
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.Scanner;
@@ -20,6 +21,13 @@ public class FriendScheduleReadService {
         printFriendScheduleMenu();
         var friendLoginId = scanner.nextLine().trim();
         var friend = UserRepository.getInstance().findUserByLoginId(friendLoginId);
+        if (friend == null) {
+            System.out.println("존재하지 않는 친구입니다.");
+            System.out.println("엔터키를 누르면 스케줄 메뉴로 돌아갑니다.");
+            scanner.nextLine();
+            return;
+        }
+
         if (!FriendRepository.getInstance().isFriend(user.id, friend.id)) {
             System.out.println("등록되지 않은 친구입니다.");
             System.out.println("엔터키를 누르면 스케줄 메뉴로 돌아갑니다.");
@@ -37,18 +45,23 @@ public class FriendScheduleReadService {
             return;
         }
 
-        var month = Integer.parseInt(dateArray[0]);
-        var day = Integer.parseInt(dateArray[1]);
-
-        Date date;
+        int month;
+        int day;
         try {
-            date = new GregorianCalendar(2024, month - 1, day).getTime();
-        } catch (IllegalArgumentException e) {
+            month = Integer.parseInt(dateArray[0]);
+            day = Integer.parseInt(dateArray[1]);
+            String formatString = "MM/dd/yyyy";
+
+            var format = new SimpleDateFormat(formatString);
+            format.setLenient(false);
+            format.parse(month + "/" + day + "/2024");
+        } catch (Exception e) {
             System.out.println("날짜 입력 오류");
             System.out.println("엔터키를 누르면 스케줄 메뉴로 돌아갑니다.");
             scanner.nextLine();
             return;
         }
+        Date date = new GregorianCalendar(2024, month - 1, day).getTime();
 
         var schedules = ScheduleRepository.getInstance()
                 .findAllByUserIdAndDate(friend.id, date);
