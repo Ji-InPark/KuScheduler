@@ -62,6 +62,25 @@ public class ScheduleMonthlyCreateService {
             return false;
         }
 
+        var monthFormat = new SimpleDateFormat("MM");
+        var dayFormat = new SimpleDateFormat("dd");
+
+        if (monthFormat.format(endDate).equals("01") || monthFormat.format(endDate).equals("02")
+                && Integer.parseInt(dayFormat.format(endDate)) > 29) {
+            System.out.println("Error! 반복이 불가능한 날짜가 포함되어 있습니다.");
+            System.out.println("엔터키를 누르면 이전 화면으로 돌아갑니다.");
+            scanner.nextLine();
+            return false;
+        }
+
+        if (Integer.parseInt(monthFormat.format(endDate)) < 12
+                && Integer.parseInt(dayFormat.format(endDate)) > 30) {
+            System.out.println("Error! 반복이 불가능한 날짜가 포함되어 있습니다.");
+            System.out.println("엔터키를 누르면 이전 화면으로 돌아갑니다.");
+            scanner.nextLine();
+            return false;
+        }
+
         System.out.print("반복할 스케줄의 중요도를 입력해주세요: ");
         var priorityInput = scanner.nextLine().trim();
         if (!isValidPriority(priorityInput)) {
@@ -73,13 +92,6 @@ public class ScheduleMonthlyCreateService {
         var priority = Integer.parseInt(priorityInput);
 
         var validSchedule = isValidSchedule(startDate, endDate, priority);
-
-        if (validSchedule == null) {
-            System.out.println("Error! 반복이 불가능한 날짜가 포함되어 있습니다.");
-            System.out.println("엔터키를 누르면 이전 화면으로 돌아갑니다.");
-            scanner.nextLine();
-            return false;
-        }
 
         if (!validSchedule) {
             System.out.println("Error! 해당 기간에 중복된 중요도의 스케줄이 이미 존재합니다.");
@@ -122,18 +134,6 @@ public class ScheduleMonthlyCreateService {
     private Boolean isValidSchedule(Date startDate, Date endDate, int priority) {
         if (priority != 3) {
             return true;
-        }
-        var monthFormat = new SimpleDateFormat("MM");
-        var dayFormat = new SimpleDateFormat("dd");
-
-        if (monthFormat.format(endDate).equals("02")
-                && Integer.parseInt(dayFormat.format(endDate)) > 29) {
-            return null;
-        }
-
-        if (Integer.parseInt(monthFormat.format(endDate)) < 12
-                && Integer.parseInt(dayFormat.format(endDate)) > 30) {
-            return null;
         }
 
         var sdf = new SimpleDateFormat("ddHHmmss");
